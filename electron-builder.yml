@@ -1,0 +1,4 @@
+appId: com.shitdone.app
+productName: ShitDone
+directories:
+  output: release
