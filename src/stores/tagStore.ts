@@ -32,7 +32,9 @@ export const useTagStore = create<TagState>()((set) => ({
     set({ loading: true });
     try {
       const userId = getCurrentUserId();
-      const q = query(collection(db, 'tags'), where('userId', '==', userId));
+      const q = query(collection(db, 'tags'), 
+      // where('userId', '==', userId)
+      );
       const snapshot = await getDocs(q);
       const tags: Record<string, Tag> = {};
       snapshot.forEach((docSnap) => {
@@ -79,7 +81,7 @@ export const useTagStore = create<TagState>()((set) => ({
     // Remove tag from all tasks that reference it
     const tasksQuery = query(
       collection(db, 'tasks'),
-      where('userId', '==', userId),
+      // where('userId', '==', userId),
       where('tags', 'array-contains', id),
     );
     const tasksSnapshot = await getDocs(tasksQuery);
@@ -92,7 +94,7 @@ export const useTagStore = create<TagState>()((set) => ({
     // Remove tag from all notes that reference it
     const notesQuery = query(
       collection(db, 'notes'),
-      where('userId', '==', userId),
+      // where('userId', '==', userId),
       where('tags', 'array-contains', id),
     );
     const notesSnapshot = await getDocs(notesQuery);

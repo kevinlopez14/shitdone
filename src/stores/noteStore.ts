@@ -40,7 +40,9 @@ export const useNoteStore = create<NoteState>()((set, get) => ({
     set({ loading: true });
     try {
       const userId = getCurrentUserId();
-      const q = query(collection(db, 'notes'), where('userId', '==', userId));
+      const q = query(collection(db, 'notes'), 
+      // where('userId', '==', userId)
+      );
       const snapshot = await getDocs(q);
       const notes: Record<string, Note> = {};
       snapshot.forEach((docSnap) => {
@@ -92,7 +94,7 @@ export const useNoteStore = create<NoteState>()((set, get) => ({
     // Remove note ID from linkedNoteIds of any task that references it
     const tasksQuery = query(
       collection(db, 'tasks'),
-      where('userId', '==', userId),
+      // where('userId', '==', userId),
       where('linkedNoteIds', 'array-contains', id),
     );
     const tasksSnapshot = await getDocs(tasksQuery);

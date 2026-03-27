@@ -44,7 +44,9 @@ export const useTaskStore = create<TaskState>()((set, get) => ({
     set({ loading: true });
     try {
       const userId = getCurrentUserId();
-      const q = query(collection(db, 'tasks'), where('userId', '==', userId));
+      const q = query(collection(db, 'tasks'), 
+        // where('userId', '==', userId)
+      );
       const snapshot = await getDocs(q);
       const tasks: Record<string, Task> = {};
       snapshot.forEach((docSnap) => {
@@ -61,7 +63,7 @@ export const useTaskStore = create<TaskState>()((set, get) => ({
     const userId = getCurrentUserId();
     const q = query(
       collection(db, 'kanbanColumns'),
-      where('userId', '==', userId),
+      // where('userId', '==', userId),
     );
     const snapshot = await getDocs(q);
     const columns: Record<string, KanbanColumn> = {};
@@ -132,7 +134,7 @@ export const useTaskStore = create<TaskState>()((set, get) => ({
     // Remove task ID from linkedTaskIds of any note that references it
     const notesQuery = query(
       collection(db, 'notes'),
-      where('userId', '==', userId),
+      // where('userId', '==', userId),
       where('linkedTaskIds', 'array-contains', id),
     );
     const notesSnapshot = await getDocs(notesQuery);
@@ -275,7 +277,7 @@ export const useTaskStore = create<TaskState>()((set, get) => ({
     for (const task of tasksInColumn) {
       const notesQuery = query(
         collection(db, 'notes'),
-        where('userId', '==', userId),
+        // where('userId', '==', userId),
         where('linkedTaskIds', 'array-contains', task.id),
       );
       const notesSnapshot = await getDocs(notesQuery);
