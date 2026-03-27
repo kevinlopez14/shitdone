@@ -31,7 +31,7 @@ export const useTagStore = create<TagState>()((set) => ({
   fetchTags: async () => {
     set({ loading: true });
     try {
-      const userId = getCurrentUserId();
+      // const userId = getCurrentUserId();
       const q = query(collection(db, 'tags'), 
       // where('userId', '==', userId)
       );
@@ -72,7 +72,7 @@ export const useTagStore = create<TagState>()((set) => ({
   },
 
   deleteTag: async (id) => {
-    const userId = getCurrentUserId();
+    // const userId = getCurrentUserId();
     const batch = writeBatch(db);
 
     // Delete the tag itself

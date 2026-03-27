@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Columns2, Tags, Building2 } from 'lucide-react';
+import { Columns2, Tags, Building2, Shield } from 'lucide-react';
 import { useUIStore } from '../../stores/uiStore';
 import { cn } from '../../lib/utils';
 import SearchBar from './SearchBar';
@@ -9,6 +9,7 @@ import { OrgManager } from '../organizations/OrgManager';
 const TABS = [
   { id: 'tasks' as const, label: 'Tareas' },
   { id: 'notes' as const, label: 'Notas' },
+  { id: 'vault' as const, label: 'Bóveda' },
 ] as const;
 
 export default function TopNav() {
@@ -41,12 +42,13 @@ export default function TopNav() {
                     key={tab.id}
                     onClick={() => setActiveView(tab.id)}
                     className={cn(
-                      'relative h-12 px-4 text-sm font-medium transition-colors duration-200',
+                      'relative h-12 px-4 text-sm font-medium transition-colors duration-200 flex items-center gap-1.5',
                       isActive
                         ? 'text-accent border-b-2 border-accent'
                         : 'text-slate-400 hover:text-slate-200',
                     )}
                   >
+                    {tab.id === 'vault' && <Shield size={14} />}
                     {tab.label}
                   </button>
                 );

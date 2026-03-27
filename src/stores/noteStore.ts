@@ -39,7 +39,7 @@ export const useNoteStore = create<NoteState>()((set, get) => ({
   fetchNotes: async () => {
     set({ loading: true });
     try {
-      const userId = getCurrentUserId();
+      // const userId = getCurrentUserId();
       const q = query(collection(db, 'notes'), 
       // where('userId', '==', userId)
       );
@@ -85,7 +85,7 @@ export const useNoteStore = create<NoteState>()((set, get) => ({
   },
 
   deleteNote: async (id) => {
-    const userId = getCurrentUserId();
+    // const userId = getCurrentUserId();
     const batch = writeBatch(db);
 
     // Delete the note

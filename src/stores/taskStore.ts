@@ -43,7 +43,7 @@ export const useTaskStore = create<TaskState>()((set, get) => ({
   fetchTasks: async () => {
     set({ loading: true });
     try {
-      const userId = getCurrentUserId();
+      // const userId = getCurrentUserId();
       const q = query(collection(db, 'tasks'), 
         // where('userId', '==', userId)
       );
@@ -125,7 +125,7 @@ export const useTaskStore = create<TaskState>()((set, get) => ({
   },
 
   deleteTask: async (id) => {
-    const userId = getCurrentUserId();
+    // const userId = getCurrentUserId();
     const batch = writeBatch(db);
 
     // Delete the task
@@ -247,7 +247,7 @@ export const useTaskStore = create<TaskState>()((set, get) => ({
   },
 
   deleteColumn: async (id) => {
-    const userId = getCurrentUserId();
+    // const userId = getCurrentUserId();
     const { tasks } = get();
     const batch = writeBatch(db);
 

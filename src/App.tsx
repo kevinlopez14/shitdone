@@ -9,6 +9,7 @@ import TopNav from './components/layout/TopNav';
 import SplitView from './components/layout/SplitView';
 import TasksPage from './pages/TasksPage';
 import NotesPage from './pages/NotesPage';
+import VaultPage from './pages/VaultPage';
 import { LoadingScreen } from './components/shared/LoadingSpinner';
 import { ToastContainer } from './components/shared/Toast';
 
@@ -94,6 +95,8 @@ function App() {
           />
         ) : activeView === 'tasks' ? (
           <TasksPage />
+        ) : activeView === 'vault' ? (
+          <VaultPage />
         ) : (
           <NotesPage />
         )}

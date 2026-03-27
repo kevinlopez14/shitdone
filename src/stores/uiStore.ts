@@ -44,7 +44,11 @@ export const useUIStore = create<UIState>()((set, get) => ({
   toasts: [],
 
   setActiveView: (view) =>
-    set({ activeView: view, isSplitView: view === 'split' }),
+    set({
+      activeView: view,
+      isSplitView: view === 'split',
+      ...(view === 'vault' ? { isSplitView: false } : {}),
+    }),
 
   setSearchQuery: (query) => set({ searchQuery: query }),
 

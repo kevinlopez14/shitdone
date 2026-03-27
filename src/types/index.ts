@@ -1,7 +1,7 @@
 import { Timestamp } from 'firebase/firestore';
 
 export type Priority = 'low' | 'medium' | 'high' | 'urgent';
-export type ActiveView = 'tasks' | 'notes' | 'split';
+export type ActiveView = 'tasks' | 'notes' | 'split' | 'vault';
 
 export interface Task {
   id: string;
