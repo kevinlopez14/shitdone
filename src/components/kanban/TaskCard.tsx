@@ -27,9 +27,12 @@ export function TaskCard({ task, isDragging }: TaskCardProps) {
     isDragging: isSortableDragging,
   } = useSortable({ id: task.id });
 
+  const orgColor = task.organizationId ? organizations[task.organizationId]?.color : null;
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
+    ...(orgColor ? { borderLeft: `4px solid ${orgColor}` } : {}),
   };
 
   const dragging = isDragging || isSortableDragging;

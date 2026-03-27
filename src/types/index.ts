@@ -42,6 +42,7 @@ export interface Organization {
   id: string;
   userId: string;
   name: string;
+  color: string;
   createdAt: Timestamp;
 }
 

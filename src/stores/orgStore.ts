@@ -14,17 +14,22 @@ import { db, getCurrentUserId } from '../lib/firebase';
 import { generateId } from '../lib/utils';
 import type { Organization } from '../types';
 
+const DEFAULT_ORG_COLORS = [
+  '#3B82F6', '#10B981', '#F59E0B', '#EF4444',
+  '#8B5CF6', '#EC4899', '#06B6D4', '#F97316',
+];
+
 interface OrgState {
   organizations: Record<string, Organization>;
   loading: boolean;
 
   fetchOrgs: () => Promise<void>;
-  createOrg: (name: string) => Promise<void>;
-  updateOrg: (id: string, name: string) => Promise<void>;
+  createOrg: (name: string, color?: string) => Promise<void>;
+  updateOrg: (id: string, updates: Partial<Pick<Organization, 'name' | 'color'>>) => Promise<void>;
   deleteOrg: (id: string) => Promise<void>;
 }
 
-export const useOrgStore = create<OrgState>()((set) => ({
+export const useOrgStore = create<OrgState>()((set, get) => ({
   organizations: {},
   loading: false,
 
@@ -40,7 +45,7 @@ export const useOrgStore = create<OrgState>()((set) => ({
       const organizations: Record<string, Organization> = {};
       snapshot.forEach((docSnap) => {
         const data = docSnap.data() as Organization;
-        organizations[docSnap.id] = { ...data, id: docSnap.id };
+        organizations[docSnap.id] = { ...data, id: docSnap.id, color: data.color || '#3B82F6' };
       });
       set({ organizations });
     } finally {
@@ -48,28 +53,20 @@ export const useOrgStore = create<OrgState>()((set) => ({
     }
   },
 
-  createOrg: async (name) => {
+  createOrg: async (name, color) => {
     const userId = getCurrentUserId();
     const id = generateId();
-    const org: Organization = {
-      id,
-      userId,
-      name,
-      createdAt: Timestamp.now(),
-    };
+    const existingCount = Object.keys(get().organizations).length;
+    const assignedColor = color ?? DEFAULT_ORG_COLORS[existingCount % DEFAULT_ORG_COLORS.length];
+    const org: Organization = { id, userId, name, color: assignedColor, createdAt: Timestamp.now() };
     await setDoc(doc(db, 'organizations', id), org);
-    set((state) => ({
-      organizations: { ...state.organizations, [id]: org },
-    }));
+    set((state) => ({ organizations: { ...state.organizations, [id]: org } }));
   },
 
-  updateOrg: async (id, name) => {
-    await updateDoc(doc(db, 'organizations', id), { name });
+  updateOrg: async (id, updates) => {
+    await updateDoc(doc(db, 'organizations', id), { ...updates });
     set((state) => ({
-      organizations: {
-        ...state.organizations,
-        [id]: { ...state.organizations[id], name },
-      },
+      organizations: { ...state.organizations, [id]: { ...state.organizations[id], ...updates } },
     }));
   },
 

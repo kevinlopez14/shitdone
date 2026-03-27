@@ -230,22 +230,30 @@ export function TaskDetail({ taskId, onClose }: TaskDetailProps) {
           {/* Organization */}
           <div className="flex flex-col gap-1">
             <label className="text-sm text-slate-400">Organización</label>
-            <select
-              value={task.organizationId ?? ''}
-              onChange={(e) => handleOrgChange(e.target.value || null)}
-              className={cn(
-                'bg-surface-dark border border-surface-border rounded-lg px-3 py-2',
-                'text-slate-200 text-sm',
-                'focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent',
+            <div className="flex items-center gap-2">
+              {task.organizationId && organizations[task.organizationId] && (
+                <span
+                  className="w-3 h-3 rounded-full shrink-0"
+                  style={{ backgroundColor: organizations[task.organizationId].color }}
+                />
               )}
-            >
-              <option value="">Sin organización</option>
-              {orgList.map((org) => (
-                <option key={org.id} value={org.id}>
-                  {org.name}
-                </option>
-              ))}
-            </select>
+              <select
+                value={task.organizationId ?? ''}
+                onChange={(e) => handleOrgChange(e.target.value || null)}
+                className={cn(
+                  'bg-surface-dark border border-surface-border rounded-lg px-3 py-2',
+                  'text-slate-200 text-sm',
+                  'focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent',
+                )}
+              >
+                <option value="">Sin organización</option>
+                {orgList.map((org) => (
+                  <option key={org.id} value={org.id}>
+                    {org.name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           {/* Tags */}

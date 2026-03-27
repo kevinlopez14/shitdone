@@ -15,10 +15,12 @@ export function OrgManager({ isOpen, onClose }: OrgManagerProps) {
 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState('');
+  const [editColor, setEditColor] = useState('');
 
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const [newName, setNewName] = useState('');
+  const [newColor, setNewColor] = useState('#3B82F6');
   const [creating, setCreating] = useState(false);
 
   const sortedOrgs = Object.values(organizations).sort((a, b) =>
@@ -30,18 +32,20 @@ export function OrgManager({ isOpen, onClose }: OrgManagerProps) {
     if (!org) return;
     setEditingId(id);
     setEditName(org.name);
+    setEditColor(org.color);
   };
 
   const cancelEdit = () => {
     setEditingId(null);
     setEditName('');
+    setEditColor('');
   };
 
   const saveEdit = async () => {
     if (!editingId) return;
     const name = editName.trim();
     if (!name) return;
-    await updateOrg(editingId, name);
+    await updateOrg(editingId, { name, color: editColor });
     cancelEdit();
   };
 
@@ -50,8 +54,9 @@ export function OrgManager({ isOpen, onClose }: OrgManagerProps) {
     if (!name) return;
     setCreating(true);
     try {
-      await createOrg(name);
+      await createOrg(name, newColor);
       setNewName('');
+      setNewColor('#3B82F6');
     } finally {
       setCreating(false);
     }
@@ -96,6 +101,12 @@ export function OrgManager({ isOpen, onClose }: OrgManagerProps) {
                     autoFocus
                     className="flex-1 bg-surface-dark border border-surface-border rounded px-2 py-1 text-sm text-slate-200 focus:outline-none focus:ring-1 focus:ring-accent"
                   />
+                  <input
+                    type="color"
+                    value={editColor}
+                    onChange={(e) => setEditColor(e.target.value)}
+                    className="w-8 h-8 rounded cursor-pointer border border-surface-border bg-surface-dark p-0.5"
+                  />
                   <button
                     onClick={() => void saveEdit()}
                     className="px-2 py-1 text-xs bg-accent text-white rounded hover:bg-accent/80 transition-colors"
@@ -112,6 +123,7 @@ export function OrgManager({ isOpen, onClose }: OrgManagerProps) {
               ) : (
                 // Normal row
                 <>
+                  <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: org.color }} />
                   <span className="flex-1 text-sm text-slate-200">{org.name}</span>
                   <button
                     onClick={() => startEdit(org.id)}
@@ -144,6 +156,12 @@ export function OrgManager({ isOpen, onClose }: OrgManagerProps) {
               onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); void handleCreate(); } }}
               placeholder="Nombre de la organización"
               className="flex-1 bg-surface-dark border border-surface-border rounded-lg px-3 py-1.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-accent"
+            />
+            <input
+              type="color"
+              value={newColor}
+              onChange={(e) => setNewColor(e.target.value)}
+              className="w-9 h-9 rounded cursor-pointer border border-surface-border bg-surface-dark p-0.5"
             />
             <button
               onClick={() => void handleCreate()}
