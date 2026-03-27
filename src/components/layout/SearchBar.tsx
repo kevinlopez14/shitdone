@@ -168,7 +168,7 @@ export default function SearchBar() {
   const orgList = Object.values(organizations);
 
   return (
-    <div ref={containerRef} className="flex flex-col gap-1 w-80">
+    <div ref={containerRef} className="flex flex-row gap-1 w-full">
       {/* ── Row 1: Search input + Filters toggle ── */}
       <div className="flex items-center gap-1.5">
         {/* Search input */}
@@ -223,7 +223,7 @@ export default function SearchBar() {
 
       {/* ── Row 2: Filter buttons (shown when toggled or active filters) ── */}
       {filterRowVisible && (
-        <div className="flex flex-wrap items-center gap-1">
+        <div className="flex flex-row items-center gap-1">
           {/* Tags dropdown */}
           <div className="relative">
             <button
